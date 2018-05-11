@@ -4,16 +4,8 @@ import sys
 import re
 import pandas as pd
 
-
-#TODO:
-#[1] testing: write unittest
-#[2] documentation: docstrings, README.md
-#
-
-
 # Suppress pandas warning
 pd.options.mode.chained_assignment = None  # default='warn'
-
 
 def get_report(file, schema):
 
@@ -116,25 +108,22 @@ def get_report(file, schema):
 
         except KeyError:
             # Add missing col to report
-            print col
-            report.append(format_col_report(col), ignore_index=True)
+            report = report.append(format_col_report(col), ignore_index=True)
 
         
         else:
             if invals:
                 # Add invalid rows to report
-                report.append(format_inval_report(invals, col, file, schema),
-                                                  ignore_index=True)
+                report = report.append(format_inval_report(invals, 
+                                                           col, 
+                                                           file, 
+                                                           schema),
+                                       ignore_index=True)
 
             # `get_missing` returns df, else None
             if isinstance(missing, pd.DataFrame):
                 # Add missing rows to report
-                report.append(format_missing_report(missing, col), 
-                                                    ignore_index=True) 
-
+                report = report.append(format_missing_report(missing, col), 
+                                       ignore_index=True) 
 
     return report
-
-# if __name__ == "__main__":
-    
-#    
