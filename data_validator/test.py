@@ -17,7 +17,3 @@ if __name__ == "__main__":
     report = get_report(test_file, test_schema.rules)
 
     print report
-
-
-
-

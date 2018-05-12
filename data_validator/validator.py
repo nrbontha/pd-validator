@@ -83,7 +83,7 @@ def get_report(file, schema):
         # Add report cols
         missing['Inval_Line'] = missing.index                
         missing['Inval_Col'] = col
-        missing['Inval_Val'] = ''
+        missing['Inval_Val'] = 'NaN'
         missing['Error'] = 'Missing value: %s required' % (col)
 
         return missing
