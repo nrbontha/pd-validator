@@ -51,11 +51,3 @@ class Schema(object):
         else:
             raise RuleError('rule for %s does not exist' % (name))
 
-
-# if __name__ == "__main__":
-
-#     rules = {}
-#     test_schema = Schema()
-#     test_schema.create_rule(name='test', length=4, type=str)
-
-#     print test_schema.rules
