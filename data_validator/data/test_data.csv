@@ -1,6 +1,7 @@
-team,first_name,last_name,age
-HOU,James,Harden,28
-HOUS,Chris,Paul,33
-,Clint,Capela,A
-GSW,Steph,Curry,
-,Kevin,Durant,29
+team,first_name,last_name,age,salary,exp
+HOU,James,Harden,28,28000000.00,7
+H0U,Chris,Paul,33,25000000.00,13
+HOU,Trevor,Ariza,31,10 million,11
+GSW,Clint,Capela,2O,7000000,3
+G$W,Steph,Curry,30,15000000.00,8
+,Kevin,D.,29,30000000,120
