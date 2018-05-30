@@ -4,6 +4,7 @@ import sys
 import re
 import numpy as np
 import pandas as pd
+#rom schema import Schema
 
 # Suppress pandas warning
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -20,39 +21,44 @@ class Validator(object):
         report = pd.DataFrame()
 
         def format_inval_report(file, col, invals):
+            
+            rows = pd.DataFrame()
+
             for k, v in invals.iteritems():
                 for inval in v: 
                     # Get rows with invalid values by column
-                    rows = self.file[file[col] == inval]
-                    
+                    row = self.file[file[col] == inval]
+
                     # Add report cols
-                    rows['Inval_Line'] = rows.index 
-                    rows.Inval_Line = rows.Inval_Line.astype(int)
-                    rows['Inval_Col'] = col
-                    rows['Inval_Val'] = inval
+                    row['Inval_Line'] = row.index+1
+                    row.Inval_Line = row.Inval_Line.astype(int)
+                    row['Inval_Col'] = col
+                    row['Inval_Val'] = inval
 
                     # Format error message by rule
                     if k == 'inval_dtypes':
-                        rows['Error'] = 'Invalid dtype: %s required' \
-                                         % (self.schema[col]['dtype'])
+                        row['Error'] = 'Invalid dtype: %s required' \
+                                        % (self.schema[col]['dtype'])
 
                     elif k == 'inval_lengths':
-                        rows['Error'] = 'Invalid length: %s maximum' \
-                                         % (self.schema[col]['length'])
+                        row['Error'] = 'Invalid length: %s maximum' \
+                                        % (self.schema[col]['length'])
 
                     elif k == 'inval_range':
-                        rows['Error'] = 'Invalid number: %s required' \
-                                         % (self.schema[col]['in_range'])
+                        row['Error'] = 'Invalid number: %s required' \
+                                        % (self.schema[col]['in_range'])
 
                     elif k == 'inval_codes':
-                        rows['Error'] = 'Invalid code: %s required' \
-                                         % (self.schema[col]['codes'])
+                        row['Error'] = 'Invalid code: %s required' \
+                                        % (self.schema[col]['codes'])
 
                     elif k == 'inval_regex':
-                        rows['Error'] = 'Invalid pattern: %s required' \
-                                         % (self.schema[col]['regex'])
+                        row['Error'] = 'Invalid pattern: %s required' \
+                                        % (self.schema[col]['regex'])
 
-                    return rows
+                    rows = rows.append(row, ignore_index=True)
+            
+            return rows
 
         def format_missing_report(col, missing):
             
@@ -87,7 +93,7 @@ class Validator(object):
                 # Add missing col to report
                 report = report.append(format_col_report(col), ignore_index=True)
 
-            
+
             else:
                 if invals:
                     # Add invalid rows to report
@@ -113,13 +119,12 @@ class Validator(object):
 
         invals = {}
    
-        #TODO: dtype check doesn't always catch bad values
         if self.file[col].dtype != schema_dtype:
             if self.file[col].dtype == object and schema_dtype == int:
                 inval_dtypes = []
                 for v in vals:
                     try:
-                        if pd.to_numeric(v) != np.dtype(np.int):
+                        if type(pd.to_numeric(v)) != np.dtype(np.int):
                             inval_dtypes.append(v)
                     except ValueError:
                         inval_dtypes.append(v)
@@ -129,7 +134,7 @@ class Validator(object):
                 inval_dtypes = []
                 for v in vals:
                     try:
-                        if pd.to_numeric(v) != np.dtype(np.float):
+                        if type(pd.to_numeric(v)) != np.dtype(np.float):
                             inval_dtypes.append(v)
                     except ValueError:
                         inval_dtypes.append(v)
@@ -145,7 +150,6 @@ class Validator(object):
                                        in vals 
                                        if len(str((v))) > schema_length]
 
-        
         if schema_range:
             if self.file[col].dtype not in [int, float]:
                 inval_range = []
@@ -163,6 +167,7 @@ class Validator(object):
                                          in vals
                                          if v < schema_range[0] or
                                             v > schema_range[1]]
+
 
         if schema_codes:
             invals['inval_codes'] = [v for v 

@@ -7,9 +7,10 @@ MAX_LEN = 255
 class RuleError(Exception):
     pass
 
-# TODO: init with rules dict (need to validate)
+
+#TODO: init with dict
 class Schema(object):
-    def __init__(self):
+    def __init__(self, rules={}):
 
         self.rules = {}
 
