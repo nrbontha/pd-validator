@@ -13,7 +13,7 @@ class Schema(object):
     def get_rule(self, col):
         return self.rules[col]
 
-    def create_rule(self, col, dtype, length=False, in_range=False, 
+    def create_rule(self, col, dtype, length, in_range=False, 
                     required=False, codes=False, regex=False):
         
         if col not in self.rules.keys():
@@ -33,7 +33,7 @@ class Schema(object):
         else:
             raise RuleError('rule for %s already exists' % (col)) 
 
-    def update_rule(self, col, dtype, length=False, in_range=False, 
+    def update_rule(self, col, dtype, length, in_range=False, 
                     required=False, codes=False, regex=False):
         
         if self.rules[col]:

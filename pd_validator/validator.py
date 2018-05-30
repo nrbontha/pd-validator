@@ -9,23 +9,23 @@ import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 
 class Report(object):
-    def __init__(self, file, schema):
+    def __init__(self, df, schema):
 
-        self.file = file
+        self.df = df
         self.schema = schema
 
     def get_report(self):
 
         report = pd.DataFrame()
 
-        def format_inval_report(file, col, invals):
+        def format_inval_report(df, col, invals):
             
             rows = pd.DataFrame()
 
             for k, v in invals.iteritems():
                 for inval in v: 
                     # Get rows with invalid values by column
-                    row = self.file[file[col] == inval]
+                    row = self.df[df[col] == inval]
 
                     # Add report cols
                     row['Inval_Line'] = row.index+1
@@ -95,7 +95,7 @@ class Report(object):
             else:
                 if invals:
                     # Add invalid rows to report
-                    report = report.append(format_inval_report(self.file, 
+                    report = report.append(format_inval_report(self.df, 
                                                                col, 
                                                                invals),
                                            ignore_index=True)
@@ -115,13 +115,13 @@ class Report(object):
         
 
         vals = [v for v
-                in self.file[col].unique() 
+                in self.df[col].unique() 
                 if not pd.isnull(v)]
 
         invals = {}
    
-        if self.file[col].dtype != schema_dtype:
-            if self.file[col].dtype == object and schema_dtype == int:
+        if self.df[col].dtype != schema_dtype:
+            if self.df[col].dtype == object and schema_dtype == int:
                 inval_dtypes = []
                 for v in vals:
                     try:
@@ -131,7 +131,7 @@ class Report(object):
                         inval_dtypes.append(v)
                 invals['inval_dtypes'] = inval_dtypes
 
-            elif self.file[col].dtype == object and schema_dtype == float:
+            elif self.df[col].dtype == object and schema_dtype == float:
                 inval_dtypes = []
                 for v in vals:
                     try:
@@ -152,7 +152,7 @@ class Report(object):
                                        if len(str((v))) > schema_length]
 
         if schema_range:
-            if self.file[col].dtype not in [int, float]:
+            if self.df[col].dtype not in [int, float]:
                 inval_range = []
                 for v in vals:
                     try:
@@ -185,6 +185,6 @@ class Report(object):
 
 
     def get_missing(self, col, schema_required=False): 
-        if schema_required and self.file[col].isnull().values.any():
-            return self.file[pd.isnull(self.file[col])]
+        if schema_required and self.df[col].isnull().values.any():
+            return self.df[pd.isnull(self.df[col])]
 
