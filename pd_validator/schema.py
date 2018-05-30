@@ -1,8 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import re
-
-MAX_LEN = 255
 
 class RuleError(Exception):
     pass
@@ -10,14 +8,14 @@ class RuleError(Exception):
 
 #TODO: init with dict
 class Schema(object):
-    def __init__(self, rules={}):
+    def __init__(self):
 
         self.rules = {}
 
     def get_rule(self, col):
         return self.rules[col]
 
-    def create_rule(self, col, dtype, length=MAX_LEN, in_range=False, 
+    def create_rule(self, col, dtype, length, in_range=False, 
                     required=False, codes=False, regex=False):
         
         if col not in self.rules.keys():
