@@ -5,10 +5,8 @@ import re
 import numpy as np
 import pandas as pd
 
-
 # Suppress pandas warning
 pd.options.mode.chained_assignment = None  # default='warn'
-
 
 class Report(object):
     def __init__(self, file, schema):
@@ -97,13 +95,16 @@ class Report(object):
             else:
                 if invals:
                     # Add invalid rows to report
-                    report = report.append(format_inval_report(self.file, col, invals),
+                    report = report.append(format_inval_report(self.file, 
+                                                               col, 
+                                                               invals),
                                            ignore_index=True)
 
                 # `get_missing` returns df, else None
                 if isinstance(missing, pd.DataFrame):
                     # Add missing rows to report
-                    report = report.append(format_missing_report(col, missing), 
+                    report = report.append(format_missing_report(col, 
+                                                                 missing), 
                                            ignore_index=True) 
 
         return report
@@ -113,7 +114,7 @@ class Report(object):
                    schema_codes=False, schema_regex=False):
         
 
-        vals = [v for v 
+        vals = [v for v
                 in self.file[col].unique() 
                 if not pd.isnull(v)]
 
