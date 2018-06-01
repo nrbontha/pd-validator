@@ -1,65 +1,61 @@
 #!/usr/bin/env python2
 
+import sys
 import re
 
-class RuleError(Exception):
-    pass
+MAX_LEN = sys.maxsize
 
 class Schema(object):
-    def __init__(self):
+    def __init__(self, rules={}):
 
-        self.rules = {}
+        self._rules = rules
+
+    def get_rules(self):
+        return self._rules
 
     def get_rule(self, col):
-        return self.rules[col]
+        return self._rules[col]
 
-    def create_rule(self, col, dtype, length, in_range=False, 
+    def create_rule(self, col, dtype, length=MAX_LEN, in_range=False, 
                     required=False, codes=False, regex=False):
         
-        if col not in self.rules.keys():
-            self.rules[col] = {'dtype': dtype,
+        if col not in self._rules.keys():
+            if in_range and dtype not in [int, float]:
+                raise TypeError('%s schema dtype must be int or float for \
+                                 valid `in_range` rule' % col)
+
+            self._rules[col] = {'dtype': dtype,
                                'length': length,
                                'in_range': in_range,
                                'required': required,
                                'codes': codes,
                                'regex': regex}
-            
-            if in_range and dtype not in [int, float]:
-                raise RuleError('%s schema dtype must be int or float for \
-                                 valid `in_range` rule' % col)
-
-            return "New rule created: %s" % (self.rules[col])
 
         else:
-            raise RuleError('rule for %s already exists' % (col)) 
+            raise ValueError('rule for %s already exists' % (col)) 
 
-    def update_rule(self, col, dtype, length, in_range=False, 
+    def update_rule(self, col, dtype, length=MAX_LEN, in_range=False, 
                     required=False, codes=False, regex=False):
         
-        if self.rules[col]:
-            self.rules[col] = {'dtype': dtype,
+        if self._rules[col]:
+            if in_range and dtype not in [int, float]:
+                raise TypeError('%s schema dtype must be int or float for \
+                                 valid `in_range` rule' % col)
+
+            self._rules[col] = {'dtype': dtype,
                                'length': length,
                                'in_range': in_range,
                                'required': required,
                                'codes': codes,
                                'regex': regex}
-            
-            if in_range and dtype not in [int, float]:
-                raise RuleError('%s schema dtype must be int or float for \
-                                 valid `in_range` rule' % col)
-
-            return "Existing rule updated: %s" % (self.rules[col])
 
         else:
-            raise RuleError('rule for %s does not exist' % (col))
+            raise KeyError('rule for %s does not exist' % (col))
 
     def delete_rule(self, col):
         
-        if self.rules[col]:
-            self.rules.pop(col)
-
-            return "Existing rule deleted: %s" % (col)
+        if self._rules[col]:
+            self._rules.pop(col)
         
         else:
-            raise RuleError('rule for %s does not exist' % (col))
-
+            raise KeyError('rule for %s does not exist' % (col))
