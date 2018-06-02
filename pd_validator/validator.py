@@ -8,7 +8,7 @@ import pandas as pd
 # Suppress pandas warning
 pd.options.mode.chained_assignment = None  # default='warn'
 
-class Report(object):
+class Validator(object):
     def __init__(self, df, schema):
 
         self.df = df
