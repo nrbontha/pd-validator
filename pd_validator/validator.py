@@ -4,8 +4,10 @@ import re
 import numpy as np
 import pandas as pd
 
+
 # Suppress pandas warning
 pd.options.mode.chained_assignment = None  #default='warn'
+
 
 def _get_vals(df, col):
     return [v for v in df[col].unique() if not pd.isnull(v)]
