@@ -1,7 +1,7 @@
 team,first_name,last_name,age,salary,exp
-HOU,James,Harden,28,28000000.00,7
+,James,Harden,28,28000000.00,7
 HOU,Chris,Paul,33,25000000.00,13
 HOUSTON,Trevor,Ariza,31,10000000.00,11
-GSW,Clint,Capela,2O,7000000.00,3
+,Clint,Capela,2O,7000000.00,3
 GSW,Steph,Curry,30,15000000.00,11
-GSW,Kevin,Durant,29,30000000.00,111
+GSW,Kevin,,29,30000000.00,111

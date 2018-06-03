@@ -3,8 +3,6 @@
 import sys
 import re
 
-MAX_LEN = sys.maxsize
-
 class Schema(object):
     
     def __init__(self, rules={}):
@@ -19,7 +17,7 @@ class Schema(object):
     def get_rule(self, col):
         return self._rules[col]
 
-    def create_rule(self, col, dtype, length=MAX_LEN, in_range=False, 
+    def create_rule(self, col, dtype, length=False, in_range=False, 
                     required=False, codes=False, regex=False):
 
         if col not in self._rules.keys():
@@ -37,7 +35,7 @@ class Schema(object):
         else:
             raise ValueError('rule for %s already exists' % (col)) 
 
-    def update_rule(self, col, dtype, length=MAX_LEN, in_range=False, 
+    def update_rule(self, col, dtype, length=False, in_range=False, 
                     required=False, codes=False, regex=False):
 
         if self._rules[col]:

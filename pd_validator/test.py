@@ -3,7 +3,7 @@
 import validator
 import pandas as pd 
 from schema import Schema
-from validator import Validator
+from report import Report
 from pprint import pprint
 
 if __name__ == "__main__":
@@ -53,15 +53,13 @@ if __name__ == "__main__":
         }
     }
 
-
+    # Test schema builder
     test_schema = Schema(rules=rules)
     test_schema.create_rule(col='team', dtype=str, length=3, required=True)
-    test_schema.update_rule(col='first_name', dtype=str, length=30, required=True)
-    test_schema.delete_rule(col='last_name')
-
-    pprint(test_schema.get_rules())
-
-    validator = Validator(df=test_file, schema=test_schema.get_rules())
+    test_schema.update_rule(col='first_name', dtype=str, length=50, required=True)
+    test_schema.delete_rule(col='salary')
+    
+    validator = Report(df=test_file, schema=test_schema.get_rules())
     report = validator.get_report()
 
     print report
