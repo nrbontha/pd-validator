@@ -14,7 +14,7 @@ if __name__ == "__main__":
         'age': {
             'codes': False,
             'dtype': int,
-            'in_range': False,
+            'range': False,
             'length': 2,
             'regex': False,
             'required': True
@@ -22,7 +22,7 @@ if __name__ == "__main__":
         'exp': {
             'codes': False,
             'dtype': int,
-            'in_range': [0, 20],
+            'range': [0, 20],
             'length': 2,
             'regex': False,
             'required': False
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         'first_name': {
             'codes': False,
             'dtype': str,
-            'in_range': False,
+            'range': False,
             'length': 30,
             'regex': False,
             'required': True
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         'last_name': {
             'codes': False,
             'dtype': str,
-            'in_range': False,
+            'range': False,
             'length': 30,
             'regex': False,
             'required': True
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         'salary': {
             'codes': False,
             'dtype': float,
-            'in_range': False,
+            'range': False,
             'length': 12,
             'regex': False,
             'required': False
@@ -57,9 +57,9 @@ if __name__ == "__main__":
     test_schema = Schema(rules=rules)
     test_schema.create_rule(col='team', dtype=str, length=3, required=True)
     test_schema.update_rule(col='first_name', dtype=str, length=50, required=True)
-    test_schema.delete_rule(col='salary')
-    
-    validator = Report(df=test_file, schema=test_schema.get_rules())
-    report = validator.get_report()
+    test_schema.delete_rule(col='first_name')
 
-    print report
+    report = Report(df=test_file, schema=test_schema())
+    print '-----'
+    print report()
+    print '-----'
