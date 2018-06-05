@@ -3,6 +3,9 @@
 `pd-validator` is a pandas wrapper library for validating DataFrames against a user-defined schema. 
 
 ```
+>>> from pd_validator import Schema
+>>> from pd_validator import Report
+
 >>> rules = {'col_1': {'dtype': int, 
                        'length': 1,  
                        'range': [0,1], 
