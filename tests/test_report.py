@@ -33,7 +33,7 @@ actual_report = Report(df=df, schema=test_schema())
 
 
 def test_report():
-    assert assert_frame_equal(expected_report, actual_report())
+    assert_frame_equal(expected_report, actual_report())
 
 
 if __name__ == "__main__":
