@@ -1,0 +1,8 @@
+col_1,col_2,inval_line,inval_col,inval_val,err_msg
+1,BC,2,col_2,BC,Invalid length: 1 char max
+1,BC,2,col_2,BC,"Invalid code: ['A', 'B', 'C'] required"
+2,D,3,col_2,D,"Invalid code: ['A', 'B', 'C'] required"
+A,B,1,col_1,A,Invalid dtype: int required
+A,B,1,col_1,A,"Invalid range: [0, 1] required"
+2,D,3,col_1,2,"Invalid range: [0, 1] required"
+,A,4,col_1,NaN,Missing value: col_1 required
