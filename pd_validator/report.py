@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+p#!/usr/bin/env python2
 
 import re
 import numpy as np
@@ -140,8 +140,6 @@ class Report(object):
                 # get missing vals in col if required
                 rule = self.schema[col]['required']['rule']
                 missing = self._get_missing(col, rule)
-
-                print missing
 
             except KeyError:
                 # add missing col to report
