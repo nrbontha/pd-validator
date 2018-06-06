@@ -15,7 +15,6 @@ setup(
     version='1.0.0',  
     description='pandas DataFrame validation library',  
     long_description=long_description,  
-    long_description_content_type='text/markdown', 
     url='https://github.com/nrbontha/pd-validator', 
     author='nrbontha',  
     author_email='nrbontha@gmail.com',
