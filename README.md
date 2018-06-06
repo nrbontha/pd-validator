@@ -33,9 +33,9 @@
 >>> report()
     col_1  col_2  inval_line  inval_col  inval_val  error
     A      B      1           col_1      A          Invalid 'dtype': int required
-    1      BC     2           col_2      BC         Invalid 'length': 1 required
+    1      BC     2           col_2      BC         Invalid 'length': 1 char max
     2      D      3           col_1      2          Invalid 'range': [0,1] required
-    2      D      3           col_2      D          Invalid 'codes': ['A', 'B', 'C'] required
+    2      D      3           col_2      D          Invalid 'code': ['A', 'B', 'C'] required
     NaN    A      4           col_1      NaN        Missing value: col_1 required
 
 ```
