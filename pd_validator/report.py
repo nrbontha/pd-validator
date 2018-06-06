@@ -63,10 +63,10 @@ def _fmt_missing_report(col, schema, missing):
         Report rows for missing required values
 
     """
-    missing['inval_line'] = (missing.index+1).astype(int)                
+    missing['inval_line'] = (missing.index+1).astype(int)
     missing['inval_col'] = col
-    missing['inval_val'] = 'NA'
-    missing['error'] = schema[col]['required']['err_msg']
+    missing['inval_val'] = 'NaN'
+    missing['err_msg'] = schema[col]['required']['err_msg']
 
     return missing
 
@@ -138,7 +138,10 @@ class Report(object):
                                           self.schema[col]['regex']['rule'])
 
                 # get missing vals in col if required
-                missing = self._get_missing(col, self.schema[col]['required'])
+                rule = self.schema[col]['required']['rule']
+                missing = self._get_missing(col, rule)
+
+                print missing
 
             except KeyError:
                 # add missing col to report
