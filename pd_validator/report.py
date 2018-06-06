@@ -1,4 +1,4 @@
-p#!/usr/bin/env python2
+#!/usr/bin/env python2
 
 import re
 import numpy as np
@@ -65,7 +65,7 @@ def _fmt_missing_report(col, schema, missing):
     """
     missing['inval_line'] = (missing.index+1).astype(int)
     missing['inval_col'] = col
-    missing['inval_val'] = 'NaN'
+    missing['inval_val'] = np.nan
     missing['err_msg'] = schema[col]['required']['err_msg']
 
     return missing

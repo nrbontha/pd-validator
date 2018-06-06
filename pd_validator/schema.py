@@ -78,7 +78,7 @@ class Schema(object):
             self._rules[col] = {'dtype': {
                                     'rule': dtype, 
                                     'err_msg': 'Invalid dtype: %s required' \
-                                                % dtype 
+                                                % dtype.__name__ 
                                     },
                                 'length': {
                                     'rule': length,
@@ -133,7 +133,7 @@ class Schema(object):
             self._rules[col] = {'dtype': {
                                     'rule': dtype, 
                                     'err_msg': 'Invalid dtype: %s required' \
-                                                % dtype 
+                                                % dtype.__name__ 
                                     },
                                 'length': {
                                     'rule': length,
