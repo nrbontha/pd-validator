@@ -37,15 +37,14 @@ def _fmt_inval_report(df, col, schema, invals):
             row['inval_line'] = (row.index+1).astype(int)
             row['inval_col'] = col
             row['inval_val'] = inval
-            row['error'] = 'Invalid %r: %r required' \
-                            % (k, schema[col][k])
+            row['err_msg'] = schema[col][k]['err_msg']
 
             rows = rows.append(row, ignore_index=True)
     
     return rows
 
 
-def _fmt_missing_report(col, missing):
+def _fmt_missing_report(col, schema, missing):
     """
     Format report rows for missing required column values.
 
@@ -53,6 +52,8 @@ def _fmt_missing_report(col, missing):
     ----------
     col : str
         Column name
+    schema : dict
+        Validation rules
     missing : pd.DataFrame
         Subset missing required column value 
 
@@ -65,7 +66,7 @@ def _fmt_missing_report(col, missing):
     missing['inval_line'] = (missing.index+1).astype(int)                
     missing['inval_col'] = col
     missing['inval_val'] = 'NA'
-    missing['error'] = 'Missing value: %s required' % (col)
+    missing['error'] = schema[col]['required']['err_msg']
 
     return missing
 
@@ -102,7 +103,7 @@ class Report(object):
     ----------
     df : pd.DataFrame
     schema : dict
-        Schema object attribute or prefromatted dict
+        Validation rules
 
     Methods
     -------
@@ -127,20 +128,19 @@ class Report(object):
         report = pd.DataFrame()
 
         for col in self.schema.keys():
-            
             try:
                 # get invalid vals in col
                 invals = self._get_invals(col,
-                                          self.schema[col]['dtype'],
-                                          self.schema[col]['length'],
-                                          self.schema[col]['range'],
-                                          self.schema[col]['codes'],
-                                          self.schema[col]['regex'])
+                                          self.schema[col]['dtype']['rule'],
+                                          self.schema[col]['length']['rule'],
+                                          self.schema[col]['range']['rule'],
+                                          self.schema[col]['codes']['rule'],
+                                          self.schema[col]['regex']['rule'])
 
                 # get missing vals in col if required
                 missing = self._get_missing(col, self.schema[col]['required'])
 
-            except Keyerror:
+            except KeyError:
                 # add missing col to report
                 rows = _fmt_col_report(col)
                 report = report.append(rows, ignore_index=True)
@@ -155,7 +155,7 @@ class Report(object):
                 # `get_missing` returns df, else None
                 if isinstance(missing, pd.DataFrame):
                     # add missing rows to report
-                    rows = _fmt_missing_report(col, missing)
+                    rows = _fmt_missing_report(col, self.schema, missing)
                     report = report.append(rows, ignore_index=True) 
 
         return report

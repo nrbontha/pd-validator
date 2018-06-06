@@ -10,16 +10,26 @@ class Schema(object):
     Attributes
     ----------
     rules : dict, optional
-        Validation rules 
+        Validation rules
 
     Methods
     -------
     __call__
         Get validation rules
-    
+
     """    
-    def __init__(self, rules={}):
-        self._rules = rules
+    def __init__(self, rules=None):
+        self._rules = {}
+
+        if rules:
+            for col in rules:
+                self.create_rule(col=col, 
+                                 dtype=rules[col]['dtype'],
+                                 length=rules[col]['length'],
+                                 range=rules[col]['range'],
+                                 required=rules[col]['required'],
+                                 codes=rules[col]['codes'],
+                                 regex=rules[col]['regex'])
 
     def __repr__(self):
         return 'Schema(rules=%r)' % (self._rules)
@@ -65,12 +75,36 @@ class Schema(object):
                 raise TypeError('%s schema dtype must be int or float for \
                                  valid `range` rule' % col)
 
-            self._rules[col] = {'dtype': dtype,
-                                'length': length,
-                                'range': range,
-                                'required': required,
-                                'codes': codes,
-                                'regex': regex}
+            self._rules[col] = {'dtype': {
+                                    'rule': dtype, 
+                                    'err_msg': 'Invalid dtype: %s required' \
+                                                % dtype 
+                                    },
+                                'length': {
+                                    'rule': length,
+                                    'err_msg': 'Invalid length: %s char max' \
+                                                % length 
+                                    },
+                                'range': {
+                                    'rule': range,
+                                    'err_msg': 'Invalid range: %s required' \
+                                                % range 
+                                    },
+                                'required': {
+                                    'rule': required,
+                                    'err_msg': 'Missing value: %s required' \
+                                                % col 
+                                    },
+                                'codes': {
+                                    'rule': codes,
+                                    'err_msg': 'Invalid code: %s required' \
+                                                % codes 
+                                    },
+                                'regex': {'rule': regex,
+                                         'err_msg': 'Invalid regex: %s required' \
+                                                     % regex
+                                    }
+                                }
 
         else:
             raise ValueError('rule for %s already exists' % (col)) 
@@ -96,12 +130,36 @@ class Schema(object):
                 raise TypeError('%s schema dtype must be int or float for \
                                  valid `range` rule' % col)
 
-            self._rules[col] = {'dtype': dtype,
-                                'length': length,
-                                'range': range,
-                                'required': required,
-                                'codes': codes,
-                                'regex': regex}
+            self._rules[col] = {'dtype': {
+                                    'rule': dtype, 
+                                    'err_msg': 'Invalid dtype: %s required' \
+                                                % dtype 
+                                    },
+                                'length': {
+                                    'rule': length,
+                                    'err_msg': 'Invalid length: %s char max' \
+                                                % length 
+                                    },
+                                'range': {
+                                    'rule': range,
+                                    'err_msg': 'Invalid range: %s required' \
+                                                % range 
+                                    },
+                                'required': {
+                                    'rule': required,
+                                    'err_msg': 'Missing value: %s required' \
+                                                % col 
+                                    },
+                                'codes': {
+                                    'rule': codes,
+                                    'err_msg': 'Invalid code: %s required' \
+                                                % codes 
+                                    },
+                                'regex': {'rule': regex,
+                                         'err_msg': 'Invalid regex: %s required' \
+                                                     % regex
+                                    }
+                                }
 
         else:
             raise KeyError('rule for %s does not exist' % (col))
