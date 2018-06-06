@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='pd_validator',  
-    version='0.1.1',  
+    version='1.0.0',  
     description='pandas DataFrame validation library',  
     long_description=long_description,  
     long_description_content_type='text/markdown', 
@@ -20,7 +20,7 @@ setup(
     author='nrbontha',  
     author_email='nrbontha@gmail.com',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Data Validation',
         'License :: OSI Approved :: MIT License',
