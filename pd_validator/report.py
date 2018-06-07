@@ -3,7 +3,7 @@
 import re
 import numpy as np
 import pandas as pd
-from validator import *
+from pd_validator.validator import *
 
 
 def _fmt_inval_report(df, col, schema, invals):
@@ -29,7 +29,7 @@ def _fmt_inval_report(df, col, schema, invals):
     """
     rows = pd.DataFrame()
 
-    for k, v in invals.iteritems():
+    for k, v in invals.items():
         for inval in v: 
             row = df[df[col] == inval]
 
