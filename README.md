@@ -4,8 +4,10 @@
 
 ```
 >>> import pandas as pd
->>> from pd_validator import Schema
->>> from pd_validator import Report
+>>> from pd_validator import (
+      Schema, 
+      Report
+    )
 
 >>> df = pd.read_csv('data.csv')
 >>> df
