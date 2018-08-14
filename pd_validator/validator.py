@@ -92,7 +92,7 @@ def check_length(df, col, schema_length):
     array_like
         Invalid values
 
-    >>> inval_length = check_dtype(df, col, 1)
+    >>> inval_length = check_length(df, col, 1)
     ['hello', 'world']
 
     """
