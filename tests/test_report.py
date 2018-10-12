@@ -11,21 +11,23 @@ df = pd.read_csv('../data/test_data.csv')
 expected_report = pd.read_csv('../data/test_report.csv')
 
 # set up test rules dict
-test_rules = {'col_1': {
-                        'dtype': int, 
-                        'length': 1,  
-                        'range': [0,1], 
-                        'required': True, 
-                        'codes': False, 
-                        'regex': False
-                       },
-             'col_2': {
-                       'dtype': str,
-                       'length': 1,
-                       'range': False,
-                       'required': False,
-                       'codes': ['A', 'B', 'C'],
-                       'regex': False}
+test_rules = {
+    'col_1': {
+        'dtype': int, 
+        'length': 1,  
+        'range': [0,1], 
+        'required': True, 
+        'codes': False, 
+        'regex': False
+    },
+    'col_2': {
+       'dtype': str,
+       'length': 1,
+       'range': False,
+       'required': False,
+       'codes': ['A', 'B', 'C'],
+       'regex': False
+    }
 }
 
 # create test schema and report

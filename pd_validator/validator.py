@@ -28,7 +28,10 @@ def _get_vals(df, col):
     ['hello', 1, 1.0, True]
 
     """
-    return [v for v in df[col].unique() if not pd.isnull(v)]
+    return [
+        v for v in df[col].unique() 
+        if not pd.isnull(v)
+    ]
 
 def check_dtype(df, col, schema_dtype):
     """
@@ -70,7 +73,10 @@ def check_dtype(df, col, schema_dtype):
                 invals.append(v)
 
     else:
-        invals = [v for v in _get_vals(df, col) if type(v) != schema_dtype]
+        invals = [
+            v for v in _get_vals(df, col) 
+            if type(v) != schema_dtype
+        ]
 
     return invals
 
@@ -95,8 +101,11 @@ def check_length(df, col, schema_length):
     >>> inval_length = check_length(df, col, 1)
     ['hello', 'world']
 
-    """
-    return [v for v in _get_vals(df, col) if len(str((v))) > schema_length]
+    """    
+    return [
+        v for v in _get_vals(df, col) 
+        if len(str((v))) > schema_length
+    ]
 
 
 def check_range(df, col, schema_range):
@@ -132,9 +141,11 @@ def check_range(df, col, schema_range):
                 invals.append(v)
 
     else:
-        invals = [v for v in _get_vals(df, col) 
-                  if v < schema_range[0] 
-                  or v > schema_range[1]]
+        invals = [
+            v for v in _get_vals(df, col) 
+            if v < schema_range[0] 
+            or v > schema_range[1]
+        ]
 
     return invals
 
@@ -158,8 +169,11 @@ def check_codes(df, col, schema_codes):
     >>> inval_codes = check_range(df, col, ['hello', 1, 1.0, True])
     ['world', 2, 2.0, False]
 
-    """
-    return [v for v in _get_vals(df, col) if v not in schema_codes]
+    """    
+    return [
+        v for v in _get_vals(df, col) 
+        if v not in schema_codes
+    ]
 
 
 def check_regex(df, col, schema_regex):
@@ -184,7 +198,11 @@ def check_regex(df, col, schema_regex):
 
     """
     p = re.compile(schema_regex)
-    return [v for v in _get_vals(df, col) if not p.match(str(v))]
+
+    return [
+        v for v in _get_vals(df, col) 
+        if not p.match(str(v))
+    ]
 
 
 def check_missing(df, col):
@@ -202,5 +220,5 @@ def check_missing(df, col):
     pd.DataFrame
         df rows missing col value
 
-    """
+    """    
     return df[pd.isnull(df[col])]

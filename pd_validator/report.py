@@ -77,11 +77,8 @@ def _fmt_col_report(col):
 
     Parameters
     ----------
-    df : pd.DataFrame
     col : str
         pd.DataFrame column name
-    invals : dict
-        Invalid values by rule violated
 
     Returns
     -------
@@ -89,10 +86,12 @@ def _fmt_col_report(col):
         Report row for missing required column
 
     """
-    return {'inval_line': 'All',
-            'inval_col': col,
-            'inval_val': 'All',
-            'error': 'Column %s is missing' % (col)}
+    return {
+        'inval_line': 'All',
+        'inval_col': col,
+        'inval_val': 'All',
+        'error': 'Column %s is missing' % (col)
+    }
 
 
 class Report(object):
@@ -125,41 +124,43 @@ class Report(object):
 
     def __call__(self):
 
-        report = pd.DataFrame()
+        rpt = pd.DataFrame()
 
         for col in self.schema.keys():
             try:
                 # get invalid vals in col
-                invals = self._get_invals(col,
-                                          self.schema[col]['dtype']['rule'],
-                                          self.schema[col]['length']['rule'],
-                                          self.schema[col]['range']['rule'],
-                                          self.schema[col]['codes']['rule'],
-                                          self.schema[col]['regex']['rule'])
+                invals = self._get_invals(
+                    col,
+                    self.schema[col]['dtype']['rule'],
+                    self.schema[col]['length']['rule'],
+                    self.schema[col]['range']['rule'],
+                    self.schema[col]['codes']['rule'],
+                    self.schema[col]['regex']['rule']
+                )
 
                 # get missing vals in col if required
                 rule = self.schema[col]['required']['rule']
                 missing = self._get_missing(col, rule)
 
             except KeyError:
-                # add missing col to report
+                # add missing col to rpt
                 rows = _fmt_col_report(col)
-                report = report.append(rows, ignore_index=True)
+                rpt = rpt.append(rows, ignore_index=True)
 
 
             else:
                 if invals:
                     # add invalid rows to report
                     rows = _fmt_inval_report(self.df, col, self.schema, invals)
-                    report = report.append(rows, ignore_index=True)
+                    rpt = rpt.append(rows, ignore_index=True)
 
                 # `get_missing` returns df, else None
                 if isinstance(missing, pd.DataFrame):
                     # add missing rows to report
                     rows = _fmt_missing_report(col, self.schema, missing)
-                    report = report.append(rows, ignore_index=True) 
+                    rpt = rpt.append(rows, ignore_index=True) 
 
-        return report
+        return rpt
 
 
     def _get_invals(self, col, schema_dtype, schema_length=False, 
