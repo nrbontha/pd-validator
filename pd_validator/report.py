@@ -6,9 +6,9 @@ import pandas as pd
 from pd_validator.validator import *
 
 
-def _fmt_inval_report(df, col, schema, invals):
+def _fmt_inval_rpt(df, col, schema, invals):
     """
-    Format report rows for column values that violate
+    Format rpt rows for column values that violate
     schema rules.
 
     Parameters
@@ -24,7 +24,7 @@ def _fmt_inval_report(df, col, schema, invals):
     Returns
     -------
     pd.DataFrame
-        Report rows for invalid column values
+        Rpt rows for invalid column values
 
     """
     rows = pd.DataFrame()
@@ -33,7 +33,7 @@ def _fmt_inval_report(df, col, schema, invals):
         for inval in v: 
             row = df[df[col] == inval]
 
-            # Add report cols
+            # Add rpt cols
             row['inval_line'] = (row.index+1).astype(int)
             row['inval_col'] = col
             row['inval_val'] = inval
@@ -44,9 +44,9 @@ def _fmt_inval_report(df, col, schema, invals):
     return rows
 
 
-def _fmt_missing_report(col, schema, missing):
+def _fmt_missing_rpt(col, schema, missing):
     """
-    Format report rows for missing required column values.
+    Format rpt rows for missing required column values.
 
     Parameters
     ----------
@@ -60,7 +60,7 @@ def _fmt_missing_report(col, schema, missing):
     Returns
     -------
     pd.DataFrame
-        Report rows for missing required values
+        Rpt rows for missing required values
 
     """
     missing['inval_line'] = (missing.index+1).astype(int)
@@ -71,9 +71,9 @@ def _fmt_missing_report(col, schema, missing):
     return missing
 
 
-def _fmt_col_report(col):
+def _fmt_col_rpt(col):
     """
-    Format report row for missing required column.
+    Format rpt row for missing required column.
 
     Parameters
     ----------
@@ -83,7 +83,7 @@ def _fmt_col_report(col):
     Returns
     -------
     dict
-        Report row for missing required column
+        Rpt row for missing required column
 
     """
     return {
@@ -96,7 +96,7 @@ def _fmt_col_report(col):
 
 class Report(object):
     """
-    Formatted validation report for pd.DataFrame objects.
+    Formatted validation rpt for pd.DataFrame objects.
 
     Attributes
     ----------
@@ -107,11 +107,11 @@ class Report(object):
     Methods
     -------
     __call__
-        Get report of invalid and missing values/columns
+        Get rpt of invalid and missing values/columns
 
     >>> schema = Schema(rules=rules)
-    >>> report = Report(df=df, schema=schema())
-    >>> report()
+    >>> rpt = Report(df=df, schema=schema())
+    >>> rpt()
     col_1  col_2  inval_line  inval_col  inval_val  error
     A      B      1           col_1      A          Invalid 'dtype': int required
     1      BC     2           col_2      BC         Invalid 'length': 1 required 
@@ -144,20 +144,20 @@ class Report(object):
 
             except KeyError:
                 # add missing col to rpt
-                rows = _fmt_col_report(col)
+                rows = _fmt_col_rpt(col)
                 rpt = rpt.append(rows, ignore_index=True)
 
 
             else:
                 if invals:
                     # add invalid rows to report
-                    rows = _fmt_inval_report(self.df, col, self.schema, invals)
+                    rows = _fmt_inval_rpt(self.df, col, self.schema, invals)
                     rpt = rpt.append(rows, ignore_index=True)
 
                 # `get_missing` returns df, else None
                 if isinstance(missing, pd.DataFrame):
                     # add missing rows to report
-                    rows = _fmt_missing_report(col, self.schema, missing)
+                    rows = _fmt_missing_rpt(col, self.schema, missing)
                     rpt = rpt.append(rows, ignore_index=True) 
 
         return rpt

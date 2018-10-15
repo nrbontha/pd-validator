@@ -4,10 +4,8 @@
 
 ```
 >>> import pandas as pd
->>> from pd_validator import (
-      Schema, 
-      Report
-    )
+>>> from pd_validator.schema import Schema
+>>> from pd_validator.report import Report
 
 >>> df = pd.read_csv('data.csv')
 >>> df
@@ -38,8 +36,8 @@
 
 >>> schema = Schema(rules=rules)
 
->>> report = Report(df=df, schema=schema())
->>> report()
+>>> rpt = Report(df=df, schema=schema())
+>>> rpt()
     col_1  col_2  inval_line  inval_col  inval_val  err_msg
     1      BC     2           col_2      BC         Invalid length: 1 char max
     1      BC     2           col_2      BC         Invalid code: ['A', 'B', 'C'] required
